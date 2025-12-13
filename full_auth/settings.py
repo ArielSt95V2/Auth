@@ -80,28 +80,20 @@ WSGI_APPLICATION = 'full_auth.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-if DEVELOPMENT_MODE:
-    # Local development (SQLite)
+if DEVELOPMENT_MODE is True:
     DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-else:
-    # Production (DigitalOcean Managed PostgreSQL)
-    DATABASE_URL = getenv("DATABASE_URL")
-
-    if not DATABASE_URL:
-        raise Exception("DATABASE_URL environment variable not defined")
-
+elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
+    if getenv('DATABASE_URL', None) is None:
+        raise Exception('DATABASE_URL environment variable not defined')
     DATABASES = {
-        "default": dj_database_url.parse(
-            DATABASE_URL,
-            conn_max_age=600,
-            ssl_require=True,
-        )
+        'default': dj_database_url.parse(getenv('DATABASE_URL')),
     }
+
 # Email settings
 
 EMAIL_BACKEND = 'django_ses.SESBackend'
