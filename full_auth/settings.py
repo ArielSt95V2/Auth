@@ -88,10 +88,14 @@ if DEVELOPMENT_MODE is True:
         }
     }
 elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
-    if getenv('DATABASE_URL', None) is None:
+    # Look for MANUAL_DATABASE_URL first (the doadmin one), fallback to the system default
+    db_url = getenv('MANUAL_DATABASE_URL', getenv('DATABASE_URL'))
+    
+    if db_url is None:
         raise Exception('DATABASE_URL environment variable not defined')
+        
     DATABASES = {
-        'default': dj_database_url.parse(getenv('DATABASE_URL')),
+        'default': dj_database_url.parse(db_url),
     }
 
 # Email settings
