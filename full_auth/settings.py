@@ -200,12 +200,15 @@ AUTH_COOKIE_MAX_AGE = 60 * 60 * 24
 AUTH_COOKIE_HTTP_ONLY = True
 AUTH_COOKIE_PATH = '/'
 
-if DEVELOPMENT_MODE:
-    AUTH_COOKIE_SECURE = False
-    AUTH_COOKIE_SAMESITE = 'Lax'  # Lax works with Secure=False in development
-else:
-    AUTH_COOKIE_SECURE = getenv('AUTH_COOKIE_SECURE', 'True') == 'True'
-    AUTH_COOKIE_SAMESITE = 'None'  # None requires Secure=True for cross-origin
+# if DEVELOPMENT_MODE:
+#     AUTH_COOKIE_SECURE = False
+#     AUTH_COOKIE_SAMESITE = 'Lax'  # Lax works with Secure=False in development
+# else:
+#     AUTH_COOKIE_SECURE = getenv('AUTH_COOKIE_SECURE', 'True') == 'True'
+#     AUTH_COOKIE_SAMESITE = 'None'  # None requires Secure=True for cross-origin
+
+AUTH_COOKIE_SECURE = getenv('AUTH_COOKIE_SECURE', 'True') == 'True'
+AUTH_COOKIE_SAMESITE = 'None'  
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = getenv('GOOGLE_AUTH_KEY')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = getenv('GOOGLE_AUTH_SECRET_KEY')
